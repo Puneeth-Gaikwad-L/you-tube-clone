@@ -97,10 +97,49 @@ main {
     flex-shrink: 0;
     position: sticky;
     top: 0;
+    padding-inline: 10px;
+    overflow: hidden;
+    transition: all 0.5s ease-in;
+    z-index: 15;
+}
+
+.left-section::-webkit-scrollbar{
+    width: 10px;
+}
+
+.left-section::-webkit-scrollbar-track{
+    background: #212121;
+}
+
+.left-section::-webkit-scrollbar-thumb{
+    background: rgb(87, 87, 87);
+    border-radius: 10px;
+}
+
+.left-section:hover{
+    overflow-y: scroll;
 }
 
 .sidebar-toggle{
     margin-left: -240px;
+}
+
+.toggle-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.toggle-btn:hover{
+    cursor: pointer;
+    background-color: #717171;
 }
 
 .home-toggle{
@@ -108,9 +147,11 @@ main {
 }
 
 .right-section {
-    width: 85%;
+    width: 100%;
     height: 100%;
     background-color: #000;
+    display: flex;
+    position: relative;
 }
 
 .button-container {
@@ -123,10 +164,12 @@ main {
     padding-inline: 10px;
     overflow: auto;
     white-space: nowrap;
-    position: sticky;
+    position: absolute;
     top: 0;
     background-color: #000;
     z-index: 10;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .button-container::-webkit-scrollbar {
@@ -162,16 +205,15 @@ main {
 }
 
 .card-container {
-    width: 100%;
+    width: 85%;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
     overflow-x: hidden;
     overflow-y: scroll;
-    align-items: center;
-    justify-content: center;
-    /* justify-content: space-between; */
-    overflow-x: hidden;
+    margin-top: 70px;
+    padding-inline: 10px;
+    /* justify-content: space-around; */
 }
 
 .card-container::-webkit-scrollbar {
@@ -194,7 +236,7 @@ main {
 
 .card {
     /* width: 365px; */
-    width: 415px;
+    width: 418px;
     height: 300px;
     margin: 5px;
     display: flex;
@@ -204,6 +246,7 @@ main {
     flex-grow: 0;
     flex-shrink: 0;
     transition: all 0.2s ease-in;
+    background-color: red;
 }
 
 .card:active{
@@ -313,6 +356,11 @@ main {
     font-size: 14px;
     font-weight: 500;
     color: #fff;
+    border-radius: 5px;
+}
+
+.sidemenu-btns:hover{
+    background-color: #313131;
 }
 
 .sidebar-top{
@@ -325,5 +373,26 @@ main {
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
+}
+
+.sidemenu-title{
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    color: #AAA;
+}
+
+.sub{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.sub>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
