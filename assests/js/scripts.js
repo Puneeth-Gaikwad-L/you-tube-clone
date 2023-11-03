@@ -2,8 +2,8 @@ const sidemenuToggle = document.getElementById("sidemenuToggle");
 const sidemenu = document.getElementById("sidebar");
 const cardContainer = document.getElementById("cardContainer");
 
-const API_KEY = "AIzaSyAx0p_HzJmxphuiYqt7b8mhIsl_9QcohRs";
-const baseUrl = "https://www.googleapis.com/youtube/v3/search"
+const API_KEY = "AIzaSyCITVHwZuK-Sdf-K6ynCM_lDnxUB2mITmw";
+const baseUrl = "https://www.googleapis.com/youtube/v3"
 
 
 sidemenuToggle.addEventListener("click", () => {
@@ -11,14 +11,46 @@ sidemenuToggle.addEventListener("click", () => {
 });
 
 async function getVideos(searchQuery, maxValue) {
-    const response = await fetch(`${baseUrl}?key=${API_KEY}&q=${searchQuery}&maxResults=${maxValue}&part=snippet`);
+    const response = await fetch(`${baseUrl}/search?key=${API_KEY}&q=${searchQuery}&maxResults=${maxValue}&part=snippet`);
     const data = await response.json();
     console.log(data);
+    for (let i = 0; i < data.items.length; i++) {
+        if (data.items[i].id.videoId != undefined && data.items[i].snippet.channelId != undefined) {
+            try {
+                let element = data.items[i];
+                const videoStats = await getVideoStats(data.items[i].id.videoId);
+                const channellogo = await getChannelLogo(data.items[i].snippet.channelId);
+                createVideoCard(element.snippet.title, element.snippet.thumbnails.high.url, element.snippet.channelTitle, videoStats.viewCount, channellogo)
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            console.log("skipped");
+        }
+    };
 }
 
-getVideos("icc", 50);
 
-function createVideoCard() {
+async function getVideoStats(videId) {
+    const response = await fetch(`${baseUrl}/videos?key=${API_KEY}&part=statistics&id=${videId}&part=contentDetails`);
+    const data = await response.json();
+    console.log(data);
+    const result = {
+        viewCount: data.items[0].statistics.viewCount,
+        likeCount: data.items[0].statistics.likeCount
+    }
+    return result;
+}
+
+async function getChannelLogo(channelId) {
+    const response = await fetch(`${baseUrl}/channels?key=${API_KEY}&part=snippet&id=${channelId}`);
+    const data = await response.json();
+    return data.items[0].snippet.thumbnails.high.url
+}
+
+getVideos("", 50);
+
+function createVideoCard(videoTitle, videoThumbnail, channelTitle, viewCount, channelLogo) {
     const card = document.createElement("div");
     card.classList.add("card");
 
@@ -26,7 +58,7 @@ function createVideoCard() {
     thumbnail.classList.add("thumbnail");
 
     const imgTag = document.createElement("img");
-    imgTag.src = "./assests/images/image 1.png";
+    imgTag.src = videoThumbnail;
     thumbnail.appendChild(imgTag);
 
     const duration = document.createElement("div");
@@ -44,7 +76,7 @@ function createVideoCard() {
     const channelThumbnail = document.createElement("div");
     channelThumbnail.classList.add("chnlimg-container");
     const img = document.createElement("img");
-    img.src = "./assests/images/User-Avatar.png";
+    img.src = channelLogo;
     channelThumbnail.appendChild(img);
     channel.appendChild(channelThumbnail);
     videoDesc.appendChild(channel);
@@ -53,19 +85,18 @@ function createVideoCard() {
     title.classList.add("title");
 
     const pTag = document.createElement("p");
-    pTag.innerText = `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus velit esse fugiat
-    laborum blanditiis ratione maxime laudantium minima officia veritatis!`;
+    pTag.innerText = videoTitle;
     title.appendChild(pTag);
 
     const chnlNameSec = document.createElement("div");
     const channelName = document.createElement("span");
     channelName.classList.add("channel-name");
-    channelName.innerText = "Red Bull Motorsport";
+    channelName.innerText = channelTitle;
     chnlNameSec.appendChild(channelName);
 
     const views = document.createElement("span");
     views.classList.add("views");
-    views.innerText = `693k views . 9 months ago`;
+    views.innerText = `${viewCount} . 9 months ago`;
     chnlNameSec.appendChild(views);
     title.appendChild(chnlNameSec);
 
@@ -75,10 +106,3 @@ function createVideoCard() {
 
     cardContainer.appendChild(card);
 }
-
-createVideoCard();
-createVideoCard();
-createVideoCard();
-createVideoCard();
-createVideoCard();
-createVideoCard();
