@@ -1,0 +1,66 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+}
+
+.video-Player{
+    width: 68%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.video-play-section{
+    width: 100%;
+    height: 70%;
+    background-color: black;
+    border-radius: 10px;
+}
+
+.playerBody{
+    width: 100vw;
+    height: 100vh;
+    background-color: #0f0f0f;
+    overflow-y: scroll;
+}
+
+.player-container{
+    margin-top: 25px;
+    width: 85%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-inline: auto;
+    border-radius: 10px;
+}
+
+.recommended{
+    width: 31%;
+    height: 100%;
+    background-color: yellow;
+    border-radius: 10px;
+}
+
+.player-title{
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    background-color: #0f0f0f6c;
+    color: #ffffff;
+    margin-top: 10px;
+}
+
+.video-description{
+    width: 98%;
+    height: 70px;
+    background-color: aqua;
+    margin-inline: auto;
+    border-radius: 10px;
+}

@@ -8,6 +8,20 @@ const baseUrl = "https://www.googleapis.com/youtube/v3"
 
 sidemenuToggle.addEventListener("click", () => {
     sidemenu.classList.toggle("sidebar-toggle");
+    let card = document.getElementsByClassName("card");
+    if (sidemenu.classList.contains("sidebar-toggle")) {
+        for (let i = 0; i < card.length; i++) {
+            const element = card[i];
+            element.style.width = "371px"
+            console.log(element);
+        }
+    } else {
+        for (let i = 0; i < card.length; i++) {
+            const element = card[i];
+            element.style.width = "418px"
+            console.log(element);
+        }
+    }
 });
 
 async function getVideos(searchQuery, maxValue) {
@@ -20,7 +34,14 @@ async function getVideos(searchQuery, maxValue) {
                 let element = data.items[i];
                 const videoStats = await getVideoStats(data.items[i].id.videoId);
                 const channellogo = await getChannelLogo(data.items[i].snippet.channelId);
-                createVideoCard(element.snippet.title, element.snippet.thumbnails.high.url, element.snippet.channelTitle, videoStats.viewCount, channellogo)
+                const videoObject = {
+                    videoId: data.items[i].id.videoId,
+                    channelLogo: channellogo,
+                    channelName :element.snippet.channelTitle,
+                    title: element.snippet.title,
+                    description:element.snippet.description
+                }
+                createVideoCard(element.snippet.title, element.snippet.thumbnails.high.url, element.snippet.channelTitle, videoStats.viewCount, channellogo, videoObject)
             } catch (err) {
                 console.error(err);
             }
@@ -28,6 +49,7 @@ async function getVideos(searchQuery, maxValue) {
             console.log("skipped");
         }
     };
+    addListeners();
 }
 
 
@@ -50,8 +72,9 @@ async function getChannelLogo(channelId) {
 
 getVideos("", 50);
 
-function createVideoCard(videoTitle, videoThumbnail, channelTitle, viewCount, channelLogo) {
+function createVideoCard(videoTitle, videoThumbnail, channelTitle, viewCount, channelLogo, videoObject) {
     const card = document.createElement("div");
+    card.dataset.custom = JSON.stringify(videoObject);
     card.classList.add("card");
 
     const thumbnail = document.createElement("div");
@@ -105,4 +128,32 @@ function createVideoCard(videoTitle, videoThumbnail, channelTitle, viewCount, ch
     card.appendChild(videoDesc);
 
     cardContainer.appendChild(card);
+}
+
+
+function addListeners() {
+    let cards = document.querySelectorAll(".card")
+    console.log(cards);
+    cards.forEach(element => {
+        element.addEventListener("click", () => {
+            console.log(element.dataset.custom);
+            gotoVideoPlayer(element.dataset.custom);
+        });
+    });
+}
+
+function gotoVideoPlayer(videoObject) {
+    setCookies(videoObject);
+    window.location.href = "./videoPlayer.html"
+};
+
+
+function setCookies(videoObject) {
+    let cookiesName = "videoObject";
+    let cookieValue = videoObject;
+    let expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 2);
+
+    let cookieString = cookiesName + "=" + encodeURIComponent(cookieValue) + "; expires=" + expirationDate.toUTCString() + "; path=/";
+    document.cookie = cookieString;
 }

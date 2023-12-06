@@ -245,7 +245,13 @@ main {
     border-radius: 10px;
     flex-grow: 0;
     flex-shrink: 0;
+    text-decoration: none;
     transition: all 0.2s ease-in;
+}
+
+.card2{
+    width: 371px;
+    /* background-color: red; */
 }
 
 .card:active{
