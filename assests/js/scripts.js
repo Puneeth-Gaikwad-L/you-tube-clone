@@ -12,20 +12,20 @@ sidemenuToggle.addEventListener("click", () => {
     if (sidemenu.classList.contains("sidebar-toggle")) {
         for (let i = 0; i < card.length; i++) {
             const element = card[i];
-            element.style.width = "371px"
+            element.style.width = "24%"
             console.log(element);
         }
     } else {
         for (let i = 0; i < card.length; i++) {
             const element = card[i];
-            element.style.width = "418px"
+            element.style.width = "32%"
             console.log(element);
         }
     }
 });
 
 async function getVideos(searchQuery, maxValue) {
-    const response = await fetch(`${baseUrl}/search?key=${API_KEY}&q=${searchQuery}&maxResults=${maxValue}&part=snippet`);
+    const response = await fetch(`${baseUrl}/search?key=${API_KEY}&q=${searchQuery}&maxResults=${maxValue}&part=snippet&safeSearch=strict`);
     const data = await response.json();
     console.log(data);
     for (let i = 0; i < data.items.length; i++) {
