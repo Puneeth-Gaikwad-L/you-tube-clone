@@ -15,6 +15,7 @@ window.addEventListener("load", () => {
             let videoObject = JSON.parse(cookieValue);
             videoId = videoObject.videoId;
             document.getElementById("playing-video-title").innerText = videoObject.title;
+            document.getElementById("desc").innerText = videoObject.description;
             console.log(videoId);
         } catch (error) {
             console.error(error);
